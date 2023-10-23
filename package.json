@@ -1,7 +1,7 @@
 {
   "name": "devcamper_api",
   "version": "1.0.0",
-  "description": "Dev Camper backend api",
+  "description": "Satendra Sahani",
   "main": "server.js",
   "scripts": {
     "start": "NODE_ENV=production node server",

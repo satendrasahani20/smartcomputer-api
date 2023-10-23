@@ -18,6 +18,11 @@ const admin=require('./routes/admin');
 // const reviews = require('./routes/reviews');
 
 const app = express();
+app.get("/",(req,res)=>{
+  return res.status(202).json({
+    message:"Url not exists"
+  })
+})
 
 // Body parser
 app.use(express.json());
