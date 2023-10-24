@@ -31,6 +31,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   // Validate emil & password
   if (!email || !password) {
+    return res.status(400).json({message:"Please provide an email and password"})
     // return next(new ErrorResponse('Please provide an email and password', 400));
   }
 
@@ -39,6 +40,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 
 
   if (!user) {
+    return res.status(400).json({message:"Invalid credentials"})
     // return next(new ErrorResponse('Invalid credentials', 401));
   }
 
@@ -47,6 +49,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   const isMatch=password===user.password
 
   if (!isMatch) {
+    return res.status(400).json({message:"Invalid credentials"})
     // return next(new ErrorResponse('Invalid credentials', 401));
   }
   const tempUser={
