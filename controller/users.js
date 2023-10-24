@@ -1,4 +1,4 @@
-const ErrorResponse = require('../utils/errorResponse');
+// const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
 
@@ -16,7 +16,7 @@ exports.getUser = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
   if(!user){
-    return next(new ErrorResponse(`No user with the id of ${req.params.id}`, 404));
+    // return next(new ErrorResponse(`No user with the id of ${req.params.id}`, 404));
   }
 
   res.status(200).json({

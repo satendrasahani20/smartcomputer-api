@@ -1,7 +1,7 @@
 const { mongoose } = require("mongoose");
 const Module = require("../../models/Module");
 const asyncHandler = require("../../middleware/async");
-const ErrorResponse = require("../../utils/errorResponse");
+// const ErrorResponse = require("../../utils/errorResponse");
 
 exports.getQuestions = asyncHandler(async (req, res, next) => {
   const moduleId = req.params.moduleId;
@@ -44,7 +44,7 @@ exports.addQuestion = asyncHandler(async (req, res, next) => {
   const module = await Module.findById(moduleId);
 
   if (!module) {
-    return next(new ErrorResponse("Module Not Found", 500));
+    // return next(new ErrorResponse("Module Not Found", 500));
   }
 
   // Check for duplicate questions within the module
@@ -54,7 +54,7 @@ exports.addQuestion = asyncHandler(async (req, res, next) => {
 
   if (isDuplicateQuestion) {
     return next(
-      new ErrorResponse("Question already exists in the module", 400)
+      // new ErrorResponse("Question already exists in the module", 400)
     );
   }
 

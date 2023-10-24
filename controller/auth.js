@@ -1,4 +1,4 @@
-const ErrorResponse = require('../utils/errorResponse');
+// const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
@@ -31,7 +31,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   // Validate emil & password
   if (!email || !password) {
-    return next(new ErrorResponse('Please provide an email and password', 400));
+    // return next(new ErrorResponse('Please provide an email and password', 400));
   }
 
   // Check for user
@@ -39,7 +39,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 
 
   if (!user) {
-    return next(new ErrorResponse('Invalid credentials', 401));
+    // return next(new ErrorResponse('Invalid credentials', 401));
   }
 
   // Check if password matches
@@ -47,7 +47,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   const isMatch=password===user.password
 
   if (!isMatch) {
-    return next(new ErrorResponse('Invalid credentials', 401));
+    // return next(new ErrorResponse('Invalid credentials', 401));
   }
   const tempUser={
     _id:user._id,
