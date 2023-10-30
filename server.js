@@ -3,21 +3,25 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const cors=require("cors")
+const formidable = require('express-formidable');
 // Load env vars
 dotenv.config({ path: './config/config.env' });
 
 // Connect to database
 connectDB();
-
+const app = express();
+app.use(formidable());
 // Route files
 const auth = require('./routes/auth');
 const admin=require('./routes/admin');
+const commonRoute=require("./routes/common")
 // const courses = require('./routes/courses');
 // const auth = require('./routes/auth');
 // const users = require('./routes/users');
 // const reviews = require('./routes/reviews');
 
-const app = express();
+
+app.use(express.urlencoded({ extended: true }));
 app.get("/",(req,res)=>{
   return res.status(202).json({
     message:"Url not exists"
@@ -62,6 +66,7 @@ app.use(cors());
 // Mount routers
 app.use('/auth', auth);
 app.use('/admin', admin);
+app.use('/', commonRoute);
 // app.use('/api/v1/courses', courses);
 // app.use('/api/v1/auth', auth);
 // app.use('/api/v1/users', users);

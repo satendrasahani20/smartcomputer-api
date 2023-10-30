@@ -44,8 +44,9 @@ exports.addQuestion = asyncHandler(async (req, res, next) => {
   const module = await Module.findById(moduleId);
 
   if (!module) {
-    // return next(new ErrorResponse("Module Not Found", 500));
+    return res.status(404).json({ error: "Module not found" });
   }
+    
 
   // Check for duplicate questions within the module
   const isDuplicateQuestion = module.questions.some(
@@ -53,9 +54,7 @@ exports.addQuestion = asyncHandler(async (req, res, next) => {
   );
 
   if (isDuplicateQuestion) {
-    return next(
-      // new ErrorResponse("Question already exists in the module", 400)
-    );
+    return next(new ErrorResponse("Question already exists in the module", 500));
   }
 
   // Create a new question object
