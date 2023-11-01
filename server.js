@@ -10,69 +10,29 @@ dotenv.config({ path: './config/config.env' });
 // Connect to database
 connectDB();
 const app = express();
-app.use(formidable());
-// Route files
-const auth = require('./routes/auth');
-const admin=require('./routes/admin');
-const commonRoute=require("./routes/common")
-// const courses = require('./routes/courses');
-// const auth = require('./routes/auth');
-// const users = require('./routes/users');
-// const reviews = require('./routes/reviews');
 
+// Route files
+
+app.use(express.json());
+app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));
+const auth = require('./routes/auth');
+const admin=require('./routes/admin');
+
+const commonRoute=require("./routes/common")
+
 app.get("/",(req,res)=>{
   return res.status(202).json({
     message:"Url not exists"
   })
 })
 
-// Body parser
-app.use(express.json());
 
-// Cookie parser
-// app.use(cookieParser());
-
-
-// File uploading
-// app.use(fileupload());
-
-// Sanitize data
-// app.use(mongoSanitize());
-
-// Set security headers
-// app.use(helmet());
-
-// Prevent XSS attacks
-// app.use(xss());
-
-// Rate limiting
-// const limiter = rateLimit({
-//   windowMs: 10 * 60 * 1000, // 10 mins
-//   max: 100
-// });
-// app.use(limiter);
-
-// Prevent http param pollution
-// app.use(hpp());
-
-// Enable CORS
-app.use(cors());
-
-// Set static folder
-// app.use(express.static(path.join(__dirname, 'public')));
-
-// Mount routers
 app.use('/auth', auth);
 app.use('/admin', admin);
+app.use(formidable());
 app.use('/', commonRoute);
-// app.use('/api/v1/courses', courses);
-// app.use('/api/v1/auth', auth);
-// app.use('/api/v1/users', users);
-// app.use('/api/v1/reviews', reviews);
-
-// app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

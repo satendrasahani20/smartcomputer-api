@@ -2,9 +2,9 @@ const asyncHandler = require("../../middleware/async");
 const fs = require("fs");
 const ImageKit = require("imagekit");
 const imagekit = new ImageKit({
-  publicKey: "public_d2Ro5kkNg9EFCoXyoctm+YQbfuM=",
-  privateKey: "private_LrWU7CHikJcPobi2gxHTJH/5qZ4=",
-  urlEndpoint: "https://ik.imagekit.io/bbnngj9wy/",
+  publicKey: process.env.IMGAGEKIT_PUBLIC_KEY,
+  privateKey: process.env.IMGAGEKIT_PRIVATE_KEY,
+  urlEndpoint: process.env.IMGAGEKIT_ENDPOINT,
 });
 exports.uploadImage = asyncHandler(async (req, res, next) => {
   if (!req.files.image) {

@@ -33,6 +33,53 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     select: false,
   },
+  fatherName:{
+    type: String,
+    default:""
+  },
+  motherName:{
+    type: String,
+    default:""
+  },
+  contact:{
+    type: String,
+    default:""
+  },
+  dateOfBirth:{
+    type: Date,
+    default:new Date()
+  },
+  gender:{
+    type: Boolean,
+    default:""
+  },
+  userState:{
+    type: String,
+    default:""
+  },
+  userCity:{
+    type: String,
+    default:""
+  },
+  userCourse:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "course",
+  },
+
+  userAddress:{
+    type: String,
+    default:""
+  },
+  userPincode:{
+    type: String,
+    default:""
+  },
+  userQualification:{
+    type: Boolean,
+    default:""
+  },
+
+
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   confirmEmailToken: String,
