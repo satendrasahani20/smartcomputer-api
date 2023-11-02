@@ -50,7 +50,7 @@ const UserSchema = new mongoose.Schema({
     default:new Date()
   },
   gender:{
-    type: Boolean,
+    type: String,
     default:""
   },
   userState:{
@@ -75,7 +75,15 @@ const UserSchema = new mongoose.Schema({
     default:""
   },
   userQualification:{
-    type: Boolean,
+    type: String,
+    default:""
+  },
+  adharCardFront:{
+    type: String,
+    default:""
+  },
+  adharCardBack:{
+    type: String,
     default:""
   },
 
