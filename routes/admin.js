@@ -5,7 +5,7 @@ const { protect } = require('../middleware/auth');
 const { getCourses, addCourse, updateCourse } = require('../controller/admin');
 const { getQuestions, addQuestion, updateQuestion, deleteQuestion } = require('../controller/admin/question');
 const { getModules, updateModules, addModules } = require('../controller/admin/module');
-const { registerStudent, getStudentLists } = require('../controller/admin/student');
+const { registerStudent, getStudentLists, updateStudent, deleteStudent } = require('../controller/admin/student');
 router.get('/get-course', protect, getCourses);
 router.post('/course', protect, addCourse);
 router.put('/course/:id', protect, updateCourse);
@@ -21,8 +21,10 @@ router.put('/questions/:moduleId/:questionId', protect, updateQuestion);
 router.delete('/questions/:moduleId/:questionId',protect,deleteQuestion)
 
 
-// 
+//
 
 router.post('/student/register',protect, registerStudent);
-router.post('/student/lists',protect, getStudentLists);
+router.put('/student/update/:studentId',protect, updateStudent);
+router.get('/student/lists',protect, getStudentLists);
+router.delete('/student/:studentId',protect, deleteStudent);
 module.exports = router;
