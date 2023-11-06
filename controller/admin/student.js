@@ -9,12 +9,17 @@ const User = require("../../models/User");
 exports.getStudentLists = asyncHandler(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1; // Current page (default: 1)
   const perPage = parseInt(req.query.perPage) || 10; // Items per page (default: 10)
-
+  const searchTerm = req.query.search; 
   // Define the aggregation pipeline
   const pipeline = [
     {
       $match: {
         role: "student", // Filter for users with the 'student' role
+        $or: [
+          { name: { $regex: searchTerm, $options: 'i' } }, // Search by name (case-insensitive)
+          { email: { $regex: searchTerm, $options: 'i' } }, // Search by email (case-insensitive)
+          { number: { $regex: searchTerm, $options: 'i' } }, // Search by number (case-insensitive)
+        ],
       },
     },
     {
