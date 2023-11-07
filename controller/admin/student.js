@@ -1,5 +1,4 @@
 // const ErrorResponse = require('../utils/errorResponse');
-const { default: mongoose } = require("mongoose");
 const asyncHandler = require("../../middleware/async");
 const User = require("../../models/User");
 
@@ -9,31 +8,35 @@ const User = require("../../models/User");
 exports.getStudentLists = asyncHandler(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1; // Current page (default: 1)
   const perPage = parseInt(req.query.perPage) || 10; // Items per page (default: 10)
-  const searchTerm = req.query.search; 
+  const searchTerm = req.query.search;
+  const role = req.query.role;
   // Define the aggregation pipeline
   const pipeline = [
     {
       $match: {
-        role: "student", // Filter for users with the 'student' role
+        role: role, // Filter for users with the 'student' role
         $or: [
-          { name: { $regex: searchTerm, $options: 'i' } }, // Search by name (case-insensitive)
-          { email: { $regex: searchTerm, $options: 'i' } }, // Search by email (case-insensitive)
-          { number: { $regex: searchTerm, $options: 'i' } }, // Search by number (case-insensitive)
+          { name: { $regex: searchTerm, $options: "i" } }, // Search by name (case-insensitive)
+          { email: { $regex: searchTerm, $options: "i" } }, // Search by email (case-insensitive)
+          { number: { $regex: searchTerm, $options: "i" } }, // Search by number (case-insensitive)
         ],
       },
     },
-    {
+  ];
+
+  if (role === "student") {
+    pipeline.push({
       $lookup: {
         from: "courses", // The name of the courses collection
         localField: "userCourse",
         foreignField: "_id",
         as: "courseData",
       },
-    },
-    {
+    });
+    pipeline.push({
       $unwind: "$courseData",
-    },
-  ];
+    });
+  }
   let totalDataCount = await User.aggregate(pipeline).count("studentCount");
   // Perform pagination using $skip and $limit
   pipeline.push({ $skip: (page - 1) * perPage }, { $limit: perPage });
@@ -45,13 +48,16 @@ exports.getStudentLists = asyncHandler(async (req, res, next) => {
   // Calculate the total number of pages
   const totalPages = Math.ceil(totalDataCount / perPage);
   let data = [];
-  studentsByCourse?.map((itm) => {
-    data.push({
-      ...itm,
-      courseName: itm.courseData.name,
+  if (role === "student") {
+    studentsByCourse?.map((itm) => {
+      data.push({
+        ...itm,
+        courseName: itm.courseData.name,
+      });
     });
-  });
-
+  }else{
+    data=studentsByCourse;
+  }
   // Create the response object
   const response = {
     data,
@@ -126,4 +132,3 @@ exports.deleteStudent = asyncHandler(async (req, res, next) => {
     message: "Delete Successfully",
   });
 });
-
