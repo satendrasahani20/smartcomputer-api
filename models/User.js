@@ -1,92 +1,92 @@
-const crypto = require('crypto');
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const randomize = require('randomatic');
+const crypto = require("crypto");
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const randomize = require("randomatic");
 
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Please add a name'],
+    required: [true, "Please add a name"],
   },
   email: {
     type: String,
-    required: [true, 'Please add an email'],
+    required: [true, "Please add an email"],
     unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Please add a valid email',
+      "Please add a valid email",
     ],
   },
-  image:{
+  image: {
     type: String,
-    default:""
+    default: "",
   },
   role: {
     type: String,
-    enum: ['student', 'admin','centre',"quardinate"],
-    default: 'student',
+    enum: ["student", "admin", "centre", "quardinate"],
+    default: "student",
   },
   password: {
     type: String,
-    required: [true, 'Please add a password'],
+    required: [true, "Please add a password"],
     minlength: 6,
     select: false,
   },
-  fatherName:{
+  fatherName: {
     type: String,
-    default:""
+    default: "",
   },
-  motherName:{
+  motherName: {
     type: String,
-    default:""
+    default: "",
   },
-  number:{
+  number: {
     type: String,
-    default:""
+    default: "",
   },
-  dateOfBirth:{
+  dateOfBirth: {
     type: Date,
-    default:new Date()
+    default: new Date(),
   },
-  gender:{
+  gender: {
     type: String,
-    default:""
+    default: "",
   },
-  userState:{
+  userState: {
     type: String,
-    default:""
+    default: "",
   },
-  userCity:{
+  userCity: {
     type: String,
-    default:""
+    default: "",
   },
-  userCourse:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "course",
-  },
-
-  userAddress:{
+  userCourse: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "course",
+    },
+  ],
+  userAddress: {
     type: String,
-    default:""
+    default: "",
   },
-  userPincode:{
+  userPincode: {
     type: String,
-    default:""
+    default: "",
   },
-  userQualification:{
+  userQualification: {
     type: String,
-    default:""
+    default: "",
   },
-  adharCardFront:{
+  adharCardFront: {
     type: String,
-    default:""
+    default: "",
   },
-  adharCardBack:{
+  adharCardBack: {
     type: String,
-    default:""
+    default: "",
   },
-
 
   resetPasswordToken: String,
   resetPasswordExpire: Date,
@@ -101,11 +101,68 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  testActivity: {
+    startTime: {
+      type: Date,
+      default: Date.now,
+    },
+    lastQuestionNo: {
+      type: Number,
+      default: 0,
+    },
+    courseId:  {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "course",
+    },
+    noOfAllQuestion: {
+      type: Number,
+      default: 0,
+    },
+    answer: {
+      type: Array,
+      default: [],
+    },
+  },
+  testResult: [
+    {
+      attemptCount:{
+        type:Number,
+        default:0,
+      },
+      attemptAt: {
+        type: Date,
+        default: Date.now,
+      },
+      courseId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "course",
+      },
+      courseName: {
+        type: String,
+        default: "",
+      },
+      maxMark:{
+        type:Number,
+        default:0,
+      },
+      cuttOffScore:{
+        type:Number,
+        default:0,
+      },
+      obtainedScore:{
+        type:Number,
+        default:0,
+      },
+      status:{
+        type:String,
+        default:"",
+      }
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-
-module.exports = mongoose.model('users', UserSchema);
+module.exports = mongoose.model("users", UserSchema);

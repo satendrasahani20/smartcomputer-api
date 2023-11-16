@@ -19,7 +19,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 const auth = require("./routes/auth");
 const admin = require("./routes/admin");
-const user = require("./routes/user");
+const student = require("./routes/student");
 
 const commonRoute = require("./routes/common");
 
@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", auth);
 app.use("/admin", admin);
-app.use("/user", user);
+app.use("/student", student);
 app.use(formidable());
 app.use("/", commonRoute);
 

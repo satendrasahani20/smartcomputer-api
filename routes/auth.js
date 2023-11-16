@@ -1,5 +1,5 @@
 const express = require('express');
-const {login,register, getUser}=require("../controller/auth")
+const {login,register, getUser, logout}=require("../controller/auth")
 
 const router = express.Router();
 
@@ -7,7 +7,7 @@ const { protect } = require('../middleware/auth');
 
 router.post('/register', register);
 router.post('/login', login);
-// router.get('/logout', logout);
+router.get('/logout', logout);
 router.get('/get-user', protect, getUser);
 // router.get('/confirmemail', confirmEmail);
 // router.put('/updatedetails', protect, updateDetails);

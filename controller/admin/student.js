@@ -23,20 +23,6 @@ exports.getStudentLists = asyncHandler(async (req, res, next) => {
       },
     },
   ];
-
-  if (role === "student") {
-    pipeline.push({
-      $lookup: {
-        from: "courses", // The name of the courses collection
-        localField: "userCourse",
-        foreignField: "_id",
-        as: "courseData",
-      },
-    });
-    pipeline.push({
-      $unwind: "$courseData",
-    });
-  }
   let totalDataCount = await User.aggregate(pipeline).count("studentCount");
   // Perform pagination using $skip and $limit
   pipeline.push({ $skip: (page - 1) * perPage }, { $limit: perPage });
@@ -48,16 +34,7 @@ exports.getStudentLists = asyncHandler(async (req, res, next) => {
   // Calculate the total number of pages
   const totalPages = Math.ceil(totalDataCount / perPage);
   let data = [];
-  if (role === "student") {
-    studentsByCourse?.map((itm) => {
-      data.push({
-        ...itm,
-        courseName: itm.courseData.name,
-      });
-    });
-  }else{
     data=studentsByCourse;
-  }
   // Create the response object
   const response = {
     data,
