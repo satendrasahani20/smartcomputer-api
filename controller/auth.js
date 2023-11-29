@@ -1,13 +1,12 @@
 // const ErrorResponse = require('../utils/errorResponse');
-const asyncHandler = require('../middleware/async');
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-
+const asyncHandler = require("../middleware/async");
+const User = require("../models/User");
+const Centre = require("../models/Centre");
+const jwt = require("jsonwebtoken");
 
 // @desc      Register user
 // @route     POST /api/v1/auth/register
 // @access    Public
-
 
 exports.register = asyncHandler(async (req, res, next) => {
   const { name, email, password, role } = req.body;
@@ -22,7 +21,6 @@ exports.register = asyncHandler(async (req, res, next) => {
   user.save({ validateBeforeSave: false });
 });
 
-
 // @desc      Login user
 // @route     POST /api/v1/auth/login
 // @access    Public
@@ -31,41 +29,44 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   // Validate emil & password
   if (!email || !password) {
-    return res.status(400).json({message:"Please provide an email and password"})
+    return res
+      .status(400)
+      .json({ message: "Please provide an email and password" });
     // return next(new ErrorResponse('Please provide an email and password', 400));
   }
 
   // Check for user
-  const user = await User.findOne({ email }).select('password email image role');
+  let user = await User.findOne({ email }).select("password email image role name");
+  let centre = await Centre.findOne({ email }).select(
+    "password email ownerImage centreName"
+  );
 
 
-  if (!user) {
-    return res.status(400).json({message:"Invalid credentials"})
+  if (!user && !centre) {
+    return res.status(400).json({ message: "Invalid credentials" });
     // return next(new ErrorResponse('Invalid credentials', 401));
   }
-
   // Check if password matches
   // const isMatch = await user.matchPassword(password);
-  const isMatch=password===user.password
+  const isMatch = password === user?.password || password === centre.password;
 
   if (!isMatch) {
-    return res.status(400).json({message:"Invalid credentials"})
+    return res.status(400).json({ message: "Invalid credentials" });
     // return next(new ErrorResponse('Invalid credentials', 401));
   }
-  const tempUser={
-    _id:user._id,
-    role:user.role,
-    image:user.image,
-    name:user.name
-  }
-  const token=jwt.sign(tempUser,process.env.JWT_SECRET_KEY,{
-    expiresIn:process.env.JWT_EXPIRE
-  })
- return res.status(200).json({
+  const tempUser = {
+    _id: user ? user._id : centre._id,
+    role: user ? user.role : "centre",
+    image: user ? user.image : centre.ownerImage,
+    name: user ? user.name : centre.centreName,
+  };
+  const token = jwt.sign(tempUser, process.env.JWT_SECRET_KEY, {
+    expiresIn: process.env.JWT_EXPIRE,
+  });
+  return res.status(200).json({
     token,
-    role:user.role
-  })
-
+    role: tempUser.role,
+  });
 });
 
 // @desc      Log user out / clear cookie
@@ -73,12 +74,12 @@ exports.login = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.logout = asyncHandler(async (req, res, next) => {
   jwt.sign({}, process.env.JWT_SECRET_KEY, {
-    expiresIn: '1s',
+    expiresIn: "1s",
   });
   // Return a success response
   res.status(200).json({
     success: true,
-    message: 'You have been logged out.',
+    message: "You have been logged out.",
   });
 });
 
@@ -94,4 +95,3 @@ exports.getUser = asyncHandler(async (req, res, next) => {
     data: user,
   });
 });
-

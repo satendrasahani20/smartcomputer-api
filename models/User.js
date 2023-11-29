@@ -110,7 +110,7 @@ const UserSchema = new mongoose.Schema({
       type: Number,
       default: 0,
     },
-    courseId:  {
+    courseId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "course",
     },
@@ -125,13 +125,18 @@ const UserSchema = new mongoose.Schema({
   },
   testResult: [
     {
-      attemptCount:{
-        type:Number,
-        default:0,
+      attemptCount: {
+        type: Number,
+        default: 0,
       },
       attemptAt: {
         type: Date,
         default: Date.now,
+      },
+      testId:{
+        type: String,
+        unique:true,
+        default: "",
       },
       courseId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -141,24 +146,52 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "",
       },
-      maxMark:{
-        type:Number,
-        default:0,
+      maxMark: {
+        type: Number,
+        default: 0,
       },
-      cuttOffScore:{
-        type:Number,
-        default:0,
+      cuttOffScore: {
+        type: Number,
+        default: 0,
       },
-      obtainedScore:{
-        type:Number,
-        default:0,
+      obtainedScore: {
+        type: Number,
+        default: 0,
       },
-      status:{
-        type:String,
-        default:"",
-      }
+      status: {
+        type: String,
+        default: "",
+      },
     },
   ],
+  registerBy: {
+    name: {
+      type: String,
+      default: "",
+    },
+    role: {
+      type: String,
+      default: "",
+    },
+    _id: {
+      type: String,
+      default: "",
+    },
+  },
+  certificate: [{
+    courseId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "course",
+    },
+    testId: {
+      type: String,
+      default: "",
+    },
+    certificateLink:{
+      type: String,
+      default: "",
+    },
+  }],
   createdAt: {
     type: Date,
     default: Date.now,

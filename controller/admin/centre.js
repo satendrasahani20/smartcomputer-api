@@ -54,6 +54,13 @@ exports.getCentre = asyncHandler(async (req, res, next) => {
       },
     },
   ];
+  if (req.user.role == 'quardinate' || req.user.role == 'centre') {
+    pipeline.push({
+      $match: {
+        "registerBy._id":req.user._id,
+      }
+    });
+  }
 
   let totalDataCount = await Centre.aggregate(pipeline).count("studentCount");
 

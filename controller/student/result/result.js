@@ -27,11 +27,15 @@ exports.saveResult = async (req, callBack) => {
   const user = await User.findById(req.user._id);
   // Increment the attemptCount by 1
   let maxAttempt = 0;
+  let testId = Math.floor(100000 + Math.random() * 900000);
   for await (let result of user.testResult) {
     if (req.courseId == result.courseId) {
       if (maxAttempt < result.attemptCount) {
         maxAttempt = result.attemptCount;
       }
+    }
+    if(testId==result?.testId){
+      testId = Math.floor(100000 + Math.random() * 900000);
     }
   }
   maxAttempt = maxAttempt + 1;
@@ -44,6 +48,7 @@ exports.saveResult = async (req, callBack) => {
     maxMark: courseDetail.maxMark,
     cuttOffScore: courseDetail.cuttOffScore,
     obtainedScore,
+    testId,
     status: courseDetail.cuttOffScore <= obtainedScore ? "passed" : "failed",
   });
   user.testActivity = {};

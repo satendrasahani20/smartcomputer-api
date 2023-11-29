@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const CourseSchema = new mongoose.Schema({
+const CentreSchema = new mongoose.Schema({
   quardinator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
@@ -30,10 +30,24 @@ const CourseSchema = new mongoose.Schema({
       qualification: { type: String },
     },
   ],
+  registerBy: {
+    name: {
+      type: String,
+      default: "",
+    },
+    role: {
+      type: String,
+      default: "",
+    },
+    _id: {
+      type: String,
+      default: "",
+    },
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports = mongoose.model("centre", CourseSchema);
+module.exports = mongoose.model("centre", CentreSchema);

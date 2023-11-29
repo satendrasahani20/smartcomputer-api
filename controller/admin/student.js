@@ -1,4 +1,5 @@
 // const ErrorResponse = require('../utils/errorResponse');
+const { default: mongoose } = require("mongoose");
 const asyncHandler = require("../../middleware/async");
 const User = require("../../models/User");
 
@@ -15,6 +16,7 @@ exports.getStudentLists = asyncHandler(async (req, res, next) => {
     {
       $match: {
         role: role, // Filter for users with the 'student' role
+
         $or: [
           { name: { $regex: searchTerm, $options: "i" } }, // Search by name (case-insensitive)
           { email: { $regex: searchTerm, $options: "i" } }, // Search by email (case-insensitive)
@@ -23,6 +25,13 @@ exports.getStudentLists = asyncHandler(async (req, res, next) => {
       },
     },
   ];
+  if (req.user.role == 'quardinate' || req.user.role == 'centre') {
+    pipeline.push({
+      $match: {
+        "registerBy._id":req.user._id,
+      }
+    });
+  }
   let totalDataCount = await User.aggregate(pipeline).count("studentCount");
   // Perform pagination using $skip and $limit
   pipeline.push({ $skip: (page - 1) * perPage }, { $limit: perPage });

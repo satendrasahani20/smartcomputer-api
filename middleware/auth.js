@@ -1,7 +1,8 @@
-const jwt = require('jsonwebtoken');
-const asyncHandler = require('./async');
+const jwt = require("jsonwebtoken");
+const asyncHandler = require("./async");
 // const ErrorResponse = require('../utils/errorResponse');
-const User = require('../models/User');
+const User = require("../models/User");
+const Centre = require("../models/Centre");
 
 // Protect routes
 exports.protect = asyncHandler(async (req, res, next) => {
@@ -9,13 +10,13 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
   if (
     req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
+    req.headers.authorization.startsWith("Bearer")
   ) {
     // Set token from Bearer token in header
-    token = req.headers.authorization.split(' ')[1];
+    token = req.headers.authorization.split(" ")[1];
     // Set token from cookie
   }
-  
+
   // else if (req.cookies.token) {
   //   token = req.cookies.token;
   // }
@@ -23,14 +24,19 @@ exports.protect = asyncHandler(async (req, res, next) => {
   // Make sure token exists
   if (!token) {
     return res.status(400).json({
-      message:"Not authorized to access this route"
-    })
+      message: "Not authorized to access this route",
+    });
   }
 
   try {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    req.user = await User.findById(decoded._id);
+      req.user =decoded;
+    // await User.findById(decoded._id) ||
+      // await Centre.findOne(decoded._id).select(
+      //   "password email ownerImage centreName"
+      // );
+      // console.log("req.user",req.user)
     next();
   } catch (err) {
     // return next(new ErrorResponse('Not authorized to access this route', 401));
