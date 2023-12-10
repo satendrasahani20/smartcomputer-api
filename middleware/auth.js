@@ -1,8 +1,6 @@
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("./async");
 // const ErrorResponse = require('../utils/errorResponse');
-const User = require("../models/User");
-const Centre = require("../models/Centre");
 
 // Protect routes
 exports.protect = asyncHandler(async (req, res, next) => {
@@ -39,6 +37,9 @@ exports.protect = asyncHandler(async (req, res, next) => {
       // console.log("req.user",req.user)
     next();
   } catch (err) {
+    res.status(401).json({
+      message:"Unautherized"
+    })
     // return next(new ErrorResponse('Not authorized to access this route', 401));
   }
 });

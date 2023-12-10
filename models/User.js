@@ -125,6 +125,10 @@ const UserSchema = new mongoose.Schema({
   },
   testResult: [
     {
+      isApproved:{
+        type: Boolean,
+        default: false,
+      },
       attemptCount: {
         type: Number,
         default: 0,
@@ -186,6 +190,10 @@ const UserSchema = new mongoose.Schema({
     testId: {
       type: String,
       default: "",
+    },
+    isApproved:{
+      type: Boolean,
+      default: false,
     },
     certificateLink:{
       type: String,

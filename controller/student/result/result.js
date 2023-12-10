@@ -82,12 +82,21 @@ function getUniqueResultsByAttemptCount(courseResults) {
 
 
 exports.getResult = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({_id:req.user._id}).select("testResult")
-  // const courseResults = [
-  //   // ... (your course results array here)
-  // ];
-  
+  const user = await User.findOne({_id:req.user._id}).select("testResult certificate").lean()
   const uniqueResults = getUniqueResultsByAttemptCount(user.testResult);
+
+  if(uniqueResults?.length){
+ 
+    for await(let [index,result] of uniqueResults.entries()){
+      let findCertificate=user.certificate.find((certificate)=>certificate.testId==result?.testId);
+      if(findCertificate && findCertificate?.isApproved){
+        uniqueResults[index].certificateLink=findCertificate?.certificateLink
+      }
+    }
+  }
+
+ 
+  
   return res.json(uniqueResults);
 
 
