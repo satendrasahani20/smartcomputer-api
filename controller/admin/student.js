@@ -88,7 +88,14 @@ exports.registerStudent = asyncHandler(async (req, res, next) => {
       message: "Plz Use another Email Id's",
     });
   }
+  
+
+  // Add the uniqueTestId to the req.body before creating the user
+  req.body.testResult = [{ testId: 0 }];
+
+
   const user = await User.create(req.body);
+  
 
   return res.status(201).json({
     success: true,

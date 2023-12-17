@@ -139,7 +139,6 @@ const UserSchema = new mongoose.Schema({
       },
       testId:{
         type: String,
-        unique:true,
         default: "",
       },
       courseId: {
