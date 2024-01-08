@@ -123,55 +123,50 @@ const UserSchema = new mongoose.Schema({
       default: [],
     },
   },
-  testResult: {
-    type:[
-      {
-        isApproved:{
-          type: Boolean,
-          default: false,
-        },
-        attemptCount: {
-          type: Number,
-          default: 0,
-        },
-        attemptAt: {
-          type: Date,
-          default: Date.now,
-        },
-        testId:{
-          type: String,
-          unique: false,
-          default: "",
-        },
-        courseId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "course",
-        },
-        courseName: {
-          type: String,
-          default: "",
-        },
-        maxMark: {
-          type: Number,
-          default: 0,
-        },
-        cuttOffScore: {
-          type: Number,
-          default: 0,
-        },
-        obtainedScore: {
-          type: Number,
-          default: 0,
-        },
-        status: {
-          type: String,
-          default: "",
-        },
+  testResult: [
+    {
+      isApproved:{
+        type: Boolean,
+        default: false,
       },
-    ],
-
-    default:[]
-  },
+      attemptCount: {
+        type: Number,
+        default: 0,
+      },
+      attemptAt: {
+        type: Date,
+        default: Date.now,
+      },
+      testId:{
+        type: String,
+        default: "",
+      },
+      courseId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "course",
+      },
+      courseName: {
+        type: String,
+        default: "",
+      },
+      maxMark: {
+        type: Number,
+        default: 0,
+      },
+      cuttOffScore: {
+        type: Number,
+        default: 0,
+      },
+      obtainedScore: {
+        type: Number,
+        default: 0,
+      },
+      status: {
+        type: String,
+        default: "",
+      },
+    },
+  ],
   registerBy: {
     name: {
       type: String,
