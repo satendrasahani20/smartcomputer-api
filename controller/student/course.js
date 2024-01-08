@@ -13,7 +13,7 @@ exports.startTest = asyncHandler(async (req, res, next) => {
   );
   const courseId = req.params.courseId;
 
-  const modules = await Module.find({ courseId }).exec();
+  const modules = await Module.find({ courseId:new mongoose.Types.ObjectId(courseId) }).exec();
   const courseDetail = await Course.findOne({ _id: courseId }).exec();
   const testDuration = parseInt(courseDetail.testTiming) * 60;
   let differenceInSeconds = 1;

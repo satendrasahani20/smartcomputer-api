@@ -90,9 +90,6 @@ exports.registerStudent = asyncHandler(async (req, res, next) => {
   }
   
 
-  // Add the uniqueTestId to the req.body before creating the user
-  req.body.testResult = [{ testId: 0 }];
-
 
   const user = await User.create(req.body);
   
@@ -176,14 +173,14 @@ exports.getAllCertificate = asyncHandler(async (req, res, next) => {
       if (
         finalArray.some(
           (item) =>
-            item.courseId.toString() === result.courseId.toString() &&
-            student._id.toString() === item.studentId.toString()
+            item?.courseId?.toString() === result?.courseId?.toString() &&
+            student?._id?.toString() === item?.studentId?.toString()
         )
       ) {
         let existsIndex = finalArray.findIndex(
           (item) =>
-          item.courseId.toString() === result.courseId.toString() &&
-          student._id.toString() === item.studentId.toString()
+          item?.courseId?.toString() === result?.courseId?.toString() &&
+          student?._id?.toString() === item?.studentId?.toString()
         );
         if (finalArray[existsIndex].attemptCount < result.attemptCount) {
        
