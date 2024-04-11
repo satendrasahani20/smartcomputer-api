@@ -58,7 +58,7 @@ exports.startTest = asyncHandler(async (req, res, next) => {
         });
       };
       req.answer = userData.testActivity.answer;
-      req.courseId = userData.testActivity.courseId;
+      req.courseId = userData.testActivity.courseId || courseId;
       req.noOfAllQuestion = userData.testActivity.noOfAllQuestion;
       await saveResult(req, callBack);
       // case : when developer start test and never close the test
